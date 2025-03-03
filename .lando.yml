@@ -1,0 +1,14 @@
+name: dildo-shop
+recipe: laravel
+config:
+  php: '8.2'
+  via: apache
+  webroot: public
+services:
+  database:
+    type: mysql:5.7
+  phpmyadmin:
+    type: phpmyadmin
+    hosts:
+      - database
+
