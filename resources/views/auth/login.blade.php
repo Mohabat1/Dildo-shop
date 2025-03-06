@@ -16,6 +16,7 @@
                 <input type="password" name="password" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Войти</button>
+            <p class="mt-3">Еще нет аккаунта? <a href="{{ route('register') }}">Зарегистрируйтесь</a></p>
         </form>
     </div>
 @endsection

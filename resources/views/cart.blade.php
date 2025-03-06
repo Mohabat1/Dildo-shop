@@ -14,7 +14,29 @@
                             <div class="card-body text-center">
                                 <h6 class="card-title">{{ Str::limit($item->name, 40) }}</h6>
                                 <p class="text-warning mb-1">&starf; {{ $item->rating }} ({{ $item->reviews }} отзывов)</p>
-                                <button class="btn btn-light border btn-sm">Удалить</button>
+                                <button class="btn btn-light border btn-sm" onclick="removeFromCart({{ $item->id }})">Удалить</button>
+                                <script>
+                                    function removeFromCart(productId) {
+                                        fetch("{{ route('cart.remove') }}", {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                            },
+                                            body: JSON.stringify({ id: productId })
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.message === 'Товар удален из корзины') {
+                                                    alert(data.message);
+                                                    // Обновите корзину или удалите товар из списка на странице
+                                                } else {
+                                                    alert(data.message);
+                                                }
+                                            })
+                                            .catch(error => console.log('Error:', error));
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -27,32 +49,37 @@
             <img src="{{ asset('images/empty-favorites.png') }}" alt="Нет товаров в корзине" width="200">
             <h3 class="mt-3">Ваша корзина пуста</h3>
             <p class="text-white">Перейдите в каталог и добавьте товары в корзину</p>
-            <a href="{{ route('home') }}" class="btn btn-danger">Перейти в каталог</a>
+            <a href="{{ route('catalog', ['category' => 'BDSM']) }}" class="btn btn-danger">Перейти в каталог</a>
         </div>
     @endif
-    <div class="container my-5">
-        <h2 class="text-center mb-4">Рекомендуемые товары</h2>
-        <div class="row row-cols-1 row-cols-md-4 g-4">
-            @php
-                $products = [
-                    ['name' => 'Анальная пробка', 'price' => '999 ₽', 'image' => asset('anal.png')],
-                    ['name' => 'Вибратор', 'price' => '1999 ₽', 'image' => asset('vib.png')],
-                    ['name' => 'Смазка 18 кг', 'price' => '499 ₽', 'image' => asset('favikini.png')],
-                    ['name' => 'Фаллоимитатор', 'price' => '1499 ₽', 'image' => asset('fala.png')],
-                ];
-            @endphp
-            @foreach($products as $product)
-                <div class="col">
-                    <div class="card h-100 shadow-sm d-flex flex-column">
-                        <img src="{{ $product['image'] }}" class="card-img-top" alt="{{ $product['name'] }}" style="height: 250px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column text-center">
-                            <h5 class="card-title flex-grow-1">{{ $product['name'] }}</h5>
-                            <p class="card-text fw-bold">{{ $product['price'] }}</p>
-                            <button class="btn btn-outline-light mt-auto">Купить</button>
-                        </div>
-                    </div>
+    <div class="container mt-5">
+        <div class="row"> <!-- ОБЕРНУЛ В ROW -->
+            <!-- Анонимность -->
+            <div class="col-md-4">
+                <div class="card border-0 bg-light p-4">
+                    <img src="{{ asset('privacy.png') }}" alt="Анонимность" class="img-fluid rounded">
+                    <h5 class="mt-3">Абсолютная анонимность</h5>
+                    <p>Абсолютная анонимность заказа, потому что будет упакован в коробку без опознавательных знаков.</p>
                 </div>
-            @endforeach
+            </div>
+
+            <!-- Гарантия качества -->
+            <div class="col-md-4">
+                <div class="card border-0 bg-light p-4">
+                    <img src="{{ asset('quality.png') }}" alt="Гарантия качества" class="img-fluid rounded">
+                    <h5 class="mt-3">Гарантия качества</h5>
+                    <p>Мы за гарантию качества: отбираем товары вручную и продаем только сертифицированную продукцию.</p>
+                </div>
+            </div>
+
+            <!-- Скидки и предложения -->
+            <div class="col-md-4">
+                <div class="card border-0 bg-light p-4">
+                    <img src="{{ asset('discounts.png') }}" alt="Скидки и предложения" class="img-fluid rounded">
+                    <h5 class="mt-3">Скидки и предложения</h5>
+                    <p>Скидки клиентам за подписку на нашу рассылку, чтобы получать новости о скидках и распродажах.</p>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

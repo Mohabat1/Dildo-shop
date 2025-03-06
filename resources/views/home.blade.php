@@ -4,26 +4,23 @@
 
 @section('main_content')
 
-    <!-- Баннер распродажи -->
+
     <section class="sale-banner">
         <div class="container text-center">
             <h1 class="sale-title">РАСПРОДАЖА</h1>
             <p class="sale-subtitle">Скидки на лучшие товары</p>
-            <a href="/sale" class="btn btn-outline-light">Смотреть товары</a>
+            <a href="{{ route('catalog', ['category' => 'BDSM']) }}" class="btn btn-outline-light">Смотреть товары</a>
         </div>
     </section>
-
-    <!-- Сетка товаров -->
     <div class="container my-5">
         <h2 class="text-center mb-4">Рекомендуемые товары</h2>
         <div class="row row-cols-1 row-cols-md-4 g-4">
-
             @php
                 $products = [
-                    ['name' => 'Анальная пробка', 'price' => '999 ₽', 'image' => asset('anal.png')],
-                    ['name' => 'Вибратор', 'price' => '1999 ₽', 'image' => asset('vib.png')],
-                    ['name' => 'Смазка 18 кг', 'price' => '499 ₽', 'image' => asset('favikini.png')],
-                    ['name' => 'Фаллоимитатор', 'price' => '1499 ₽', 'image' => asset('fala.png')],
+                    ['id' => 1, 'name' => 'Анальная пробка', 'price' => '999 ₽', 'image' => asset('anal.png')],
+                    ['id' => 2, 'name' => 'Вибратор', 'price' => '1999 ₽', 'image' => asset('vib.png')],
+                    ['id' => 3, 'name' => 'Смазка 18 кг', 'price' => '499 ₽', 'image' => asset('favikini.png')],
+                    ['id' => 4, 'name' => 'Фаллоимитатор', 'price' => '1499 ₽', 'image' => asset('fala.png')],
                 ];
             @endphp
 
@@ -34,17 +31,54 @@
                         <div class="card-body text-center">
                             <h5 class="card-title">{{ $product['name'] }}</h5>
                             <p class="card-text fw-bold">{{ $product['price'] }}</p>
-                            <button class="btn btn-outline-dark">Купить</button>
+                            <div class="d-flex justify-content-around">
+                                <button class="btn btn-outline-dark add-to-cart" data-id="{{ $product['id'] }}">
+                                    🛒
+                                </button>
+                                <button class="btn btn-outline-danger add-to-favorite" data-id="{{ $product['id'] }}">
+                                    ❤️
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             @endforeach
-
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".add-to-cart").forEach(button => {
+                button.addEventListener("click", function() {
+                    let productId = this.getAttribute("data-id");
+                    fetch("{{ route('cart.add') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({ id: productId })
+                    }).then(response => response.json())
+                        .then(data => alert(data.message));
+                });
+            });
+            document.querySelectorAll(".add-to-favorite").forEach(button => {
+                button.addEventListener("click", function() {
+                    let productId = this.getAttribute("data-id");
+                    fetch("{{ route('favorite.add') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({ id: productId })
+                    }).then(response => response.json())
+                        .then(data => alert(data.message));
+                });
+            });
+        });
+    </script>
     <div class="container mt-5">
-        <div class="row text-center">
-            <!-- Анонимность -->
+        <div class="row">
             <div class="col-md-4">
                 <div class="card border-0 bg-light p-4">
                     <img src="{{ asset('privacy.png') }}" alt="Анонимность" class="img-fluid rounded">
@@ -52,8 +86,6 @@
                     <p>Абсолютная анонимность заказа, потому что будет упакован в коробку без опознавательных знаков.</p>
                 </div>
             </div>
-
-            <!-- Гарантия качества -->
             <div class="col-md-4">
                 <div class="card border-0 bg-light p-4">
                     <img src="{{ asset('quality.png') }}" alt="Гарантия качества" class="img-fluid rounded">
@@ -61,8 +93,6 @@
                     <p>Мы за гарантию качества: отбираем товары вручную и продаем только сертифицированную продукцию.</p>
                 </div>
             </div>
-
-            <!-- Скидки и предложения -->
             <div class="col-md-4">
                 <div class="card border-0 bg-light p-4">
                     <img src="{{ asset('discounts.png') }}" alt="Скидки и предложения" class="img-fluid rounded">
@@ -72,11 +102,7 @@
             </div>
         </div>
     </div>
-
-
 @endsection
-
-<!-- Стили -->
 <style>
     .sale-banner {
         background: #212529;
@@ -141,3 +167,26 @@
         transform: scale(1.05);
     }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".remove-from-favorites").forEach(button => {
+            button.addEventListener("click", function() {
+                let productId = this.getAttribute("data-id");
+
+                fetch("{{ route('favorite.remove') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ id: productId })
+                }).then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        location.reload(); // Обновляет страницу, чтобы убрать удаленный товар
+                    });
+            });
+        });
+    });
+</script>
+
