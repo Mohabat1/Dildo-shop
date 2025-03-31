@@ -1,66 +1,137 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Dildo-shop
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Dildo-shop — это современный маркетплейс для продажи интимных товаров. Разработан на базе **Laravel** с использованием **Docker** и **MySQL** для удобного развертывания и масштабирования. Проект поддерживает авторизацию и регистрацию пользователей, а также включает функционал корзины и оформления заказов.
 
-## About Laravel
+## Стек технологий
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Backend**: Laravel 8, PHP 8.2
+- **Frontend**: Blade (без использования npm, Vite и сборщиков)
+- **База данных**: MySQL 5.7
+- **Контейнеризация**: Docker, Lando
+- **Авторизация и регистрация**: Используются стандартные возможности Laravel Breeze
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Описание
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Проект представляет собой маркетплейс, где пользователи могут просматривать, добавлять в корзину и заказывать интимные товары. Включает в себя следующие основные функции:
 
-## Learning Laravel
+- Авторизация и регистрация пользователей
+- Просмотр товаров по категориям
+- Добавление товаров в корзину и избранное
+- Оформление заказов
+- Поддержка базы данных MySQL
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Установка
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Требования
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **PHP 8.2**
+2. **Docker** и **Lando** для контейнеризации
+3. **MySQL 5.7**
 
-## Laravel Sponsors
+### Шаги для установки
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/Mohabat1/Dildo-shop.git
 
-### Premium Partners
+    Перейдите в папку проекта:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+cd Dildo-shop
 
-## Contributing
+Запустите контейнеры с помощью Lando:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+lando start
 
-## Code of Conduct
+После запуска контейнеров выполните миграции базы данных:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+lando artisan migrate
 
-## Security Vulnerabilities
+Запустите сервер Laravel:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+lando artisan serve
 
-## License
+Откройте браузер и перейдите по адресу:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    http://localhost:8000
+
+Структура проекта
+
+    app/ — содержит логику приложения, контроллеры, модели и сервисы
+
+    resources/views/ — шаблоны Blade для отображения страниц
+
+    routes/ — маршруты приложения
+
+    database/migrations/ — миграции базы данных для создания таблиц
+
+    docker/ — конфигурации Docker и Lando для контейнеризации
+
+Важные команды
+
+    Запуск миграций:
+
+lando artisan migrate
+
+Запуск сидов базы данных (если нужно наполнить базу тестовыми данными):
+
+lando artisan db:seed
+
+Очистка кэша и сессий:
+
+    lando artisan cache:clear
+
+Примечания
+
+    Для настройки почты (например, для отправки уведомлений или подтверждения регистрации) используйте стандартные настройки Laravel для подключения SMTP серверов.
+
+    Проект изначально использует Laravel Breeze для базовой аутентификации, но вы можете добавить дополнительные функции аутентификации по своему усмотрению.
+
+Лицензия
+
+Этот проект лицензирован под MIT License.
+Вклад в проект
+
+Если вы хотите внести свой вклад в проект, создайте pull request с описанием изменений. Обязательно добавьте тесты, если это необходимо.
+
+
+---
+
+### **Объяснение структуры**
+
+1. **Название и описание проекта**:
+   - Включает название и краткое описание проекта, что он из себя представляет и чем полезен.
+   
+2. **Стек технологий**:
+   - Перечислены ключевые технологии и инструменты, которые используются в проекте.
+   
+3. **Описание**:
+   - Описание основных функций и возможностей проекта.
+   
+4. **Установка**:
+   - Подробное руководство по установке проекта, включая требования и шаги для развертывания.
+   
+5. **Структура проекта**:
+   - Описание структуры каталогов проекта, что находится в каких папках.
+
+6. **Важные команды**:
+   - Команды для работы с проектом, такие как миграции, сиды, очистка кэша.
+
+7. **Примечания**:
+   - Важные моменты, которые нужно учесть при развертывании или использовании проекта.
+
+8. **Лицензия**:
+   - Указывается лицензия, под которой распространяется проект (в данном случае, MIT).
+
+9. **Вклад в проект**:
+   - Если кто-то хочет внести свой вклад в проект, объясняем, как это можно сделать.
+
+---
+
+### **Рекомендации**
+
+1. **Добавить скриншоты** (если проект имеет визуальные элементы, например, страницы или интерфейсы).
+2. **Добавить более подробное описание функционала**, если проект развивается и добавляются новые фичи.
+3. **Ссылки на документацию** по использованию сторонних технологий (например, Laravel или Lando).
+
+Попробуй вставить этот README в свой репозиторий. Он будет выглядеть хорошо и поможет новым пользователям и разработчикам быстро разобраться в проекте. 🚀
+
